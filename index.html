@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金融幸存者</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/ui-components.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="start-screen">
+            <h1>金融幸存者</h1>
+            <p>在动荡的金融市场中生存并壮大您的资产</p>
+            <p>使用方向键移动，鼠标点击攻击敌人，收集资产</p>
+            <button id="start-button">开始游戏</button>
+        </div>
+        <div id="game-header">
+            <div id="time">时间: <span id="time-value">0</span></div>
+            <div id="score">资产: <span id="score-value">0</span></div>
+            <div id="level">等级: <span id="level-value">1</span></div>
+        </div>
+        <canvas id="game-canvas"></canvas>
+        <div id="upgrade-menu" class="hidden">
+            <h2>升级</h2>
+            <div id="upgrade-options"></div>
+            <button id="close-upgrade">关闭</button>
+        </div>
+        <div id="game-over" class="hidden">
+            <h2>破产了!</h2>
+            <p>你的最终资产: <span id="final-score">0</span></p>
+            <button id="restart-button">重新开始</button>
+        </div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html> 

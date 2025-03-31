@@ -1,0 +1,106 @@
+/* 通用UI组件样式 */
+.hidden {
+    display: none;
+}
+
+button {
+    background: linear-gradient(to bottom, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    background: linear-gradient(to bottom, #2980b9, #2171a6);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 升级菜单样式 */
+#upgrade-menu, #game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 31, 44, 0.95);
+    padding: 25px;
+    border-radius: 8px;
+    width: 350px;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+#upgrade-menu h2, #game-over h2 {
+    margin-bottom: 20px;
+    color: #3498db;
+    font-size: 24px;
+    text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+}
+
+#upgrade-options {
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.upgrade-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: rgba(52, 73, 94, 0.7);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 4px solid #3498db;
+    text-align: left;
+}
+
+.upgrade-item:hover {
+    background: rgba(52, 73, 94, 0.9);
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.upgrade-item div:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #e9f4fc;
+}
+
+.upgrade-item div:last-child {
+    font-size: 14px;
+    color: #bdc3c7;
+}
+
+/* 游戏结束菜单 */
+#game-over {
+    text-align: center;
+}
+
+#game-over p {
+    margin: 20px 0;
+    font-size: 18px;
+}
+
+#final-score {
+    font-size: 30px;
+    color: #3498db;
+    font-weight: bold;
+    display: block;
+    margin: 10px 0;
+    text-shadow: 0 0 15px rgba(52, 152, 219, 0.7);
+} 

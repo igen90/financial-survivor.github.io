@@ -35,27 +35,27 @@ export const CONFIG = {
             }
         },
         MONEY_RAIN: {
-            DROP_COUNT: 80,  // 减少数量，避免过于密集
+            DROP_COUNT: 20,        // 减少雨滴数量
             DROP_SIZE: {
-                MIN: 16,
-                MAX: 28
+                MIN: 12,
+                MAX: 24
             },
             SPEED: {
-                MIN: 0.8,    // 降低速度
+                MIN: 0.5,
                 MAX: 1.5
             },
             ROTATION_SPEED: {
-                MIN: 0.005,  // 降低旋转速度
-                MAX: 0.01
+                MIN: 0.001,
+                MAX: 0.003
             },
             OPACITY: {
-                MIN: 0.3,
-                MAX: 0.6
+                MIN: 0.1,
+                MAX: 0.3
             },
-            SPAWN_RATE: 0.08,  // 降低生成概率
+            SPAWN_RATE: 0.02,      // 降低生成频率
             SWAY: {
-                AMPLITUDE: 0.8,  // 减小摇摆幅度
-                SPEED: 0.01      // 降低摇摆速度
+                AMPLITUDE: 0.5,
+                SPEED: 0.01
             }
         }
     },

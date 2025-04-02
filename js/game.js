@@ -9,8 +9,14 @@ export class Game {
         // 初始化游戏画布
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
-        this.canvas.width = CONFIG.CANVAS_WIDTH;
-        this.canvas.height = CONFIG.CANVAS_HEIGHT;
+        
+        // 设置画布尺寸
+        this.setCanvasSize();
+        
+        // 添加窗口大小改变事件监听
+        window.addEventListener('resize', () => {
+            this.setCanvasSize();
+        });
         
         // 游戏状态
         this.gameOver = false;
@@ -76,6 +82,32 @@ export class Game {
         // 启动游戏循环
         this.lastTime = 0;
         requestAnimationFrame(this.gameLoop.bind(this));
+    }
+    
+    // 设置画布尺寸
+    setCanvasSize() {
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+        
+        // 计算游戏区域的尺寸
+        let gameWidth = CONFIG.CANVAS_WIDTH;
+        let gameHeight = CONFIG.CANVAS_HEIGHT;
+        
+        // 计算缩放比例
+        const scaleX = windowWidth / gameWidth;
+        const scaleY = windowHeight / gameHeight;
+        const scale = Math.min(scaleX, scaleY);
+        
+        // 设置画布尺寸
+        this.canvas.style.width = `${gameWidth * scale}px`;
+        this.canvas.style.height = `${gameHeight * scale}px`;
+        
+        // 保持画布的实际尺寸不变
+        this.canvas.width = CONFIG.CANVAS_WIDTH;
+        this.canvas.height = CONFIG.CANVAS_HEIGHT;
+        
+        // 更新坐标转换方法中的缩放比例
+        this.canvasScale = scale;
     }
     
     initMoneyRain() {
@@ -719,21 +751,17 @@ export class Game {
         this.startGame();
     }
 
-    // 添加坐标转换方法 - 将浏览器显示坐标转换为canvas内部坐标
+    // 修改坐标转换方法
     convertToCanvasCoordinates(clientX, clientY) {
         const rect = this.canvas.getBoundingClientRect();
         // 获取相对于canvas的位置
         let x = clientX - rect.left;
         let y = clientY - rect.top;
         
-        // 计算缩放比例
-        const scaleX = CONFIG.CANVAS_WIDTH / rect.width;
-        const scaleY = CONFIG.CANVAS_HEIGHT / rect.height;
-        
-        // 应用缩放比例
+        // 使用新的缩放比例
         return {
-            x: x * scaleX,
-            y: y * scaleY
+            x: x / this.canvasScale,
+            y: y / this.canvasScale
         };
     }
 

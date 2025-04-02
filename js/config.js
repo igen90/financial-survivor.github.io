@@ -71,7 +71,7 @@ export const CONFIG = {
         INVESTMENT_POWER: 1,
         INVESTMENT_RADIUS: 150,
         INVESTMENT_RATE: 1,
-        MACHINE_GUN_RATE: 30,
+        MACHINE_GUN_RATE: 100,
         ROCKET_COOLDOWN: 2000
     },
     

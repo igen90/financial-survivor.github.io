@@ -4,6 +4,18 @@
     box-sizing: border-box;
 }
 
+/* 全局样式 */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    position: fixed;
+    background-color: #000; /* 黑色背景确保边缘效果 */
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #121212;
@@ -11,15 +23,26 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
 }
 
 #game-container {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 800px;
+    height: 600px;
+    border: 2px solid #2c3e50;
     overflow: hidden;
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+/* 16:9固定比例容器 */
+.aspect-ratio-16-9 {
+    aspect-ratio: 16/9;
+    width: 100%;
+    max-width: 1920px;
+    max-height: 1080px;
+    margin: 0 auto;
 }
 
 #game-header {
@@ -27,25 +50,13 @@ body {
     justify-content: space-between;
     padding: 10px;
     background-color: #2c3e50;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    min-width: 320px;
-    max-width: 100%;
-    z-index: 10;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 #game-canvas {
     display: block;
     background-color: #1e272e;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    height: calc(100% - 40px);
 }
 
 .hidden {
@@ -157,23 +168,56 @@ button:hover {
     background-color: #27ae60;
 }
 
+/* 移动设备处理 */
 @media screen and (max-width: 768px) {
+    body {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+    }
+    
     #game-container {
+        position: fixed;
         width: 100vw;
         height: 100vh;
         border: none;
+        max-width: none;
+        max-height: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .aspect-ratio-16-9 {
+        width: auto;
+        height: auto;
     }
 
     #game-canvas {
-        top: calc(50% + 20px);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100% !important;
+        height: auto !important;
+        max-height: 100vh;
+        max-width: 100vw;
+        aspect-ratio: 16/9;
     }
 
     #game-header {
-        padding: 10px 15px;
-        font-size: 1.1em;
-        min-width: 280px;
-        width: 90%;
-        max-width: 400px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        padding: 10px;
+        font-size: 1.2em;
+        background-color: rgba(44, 62, 80, 0.8);
     }
 
     #start-screen h1 {
@@ -198,6 +242,49 @@ button:hover {
         padding: 12px 24px;
         font-size: 1.1em;
     }
+    
+    /* 隐藏桌面专用控制提示 */
+    .desktop-controls {
+        display: none;
+    }
+}
+
+/* 强制横屏CSS - 设置16:9宽高比 */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+    html {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        overflow-x: hidden;
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+    
+    body {
+        width: 100vh;
+        height: 100vw;
+    }
+    
+    #game-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* 确保宽高比16:9 */
+@media screen and (orientation: landscape) {
+    #game-canvas {
+        aspect-ratio: 16/9;
+        max-width: 100vw;
+        max-height: 100vh;
+        width: auto;
+        height: auto;
+    }
 }
 
 /* 添加触摸反馈效果 */
@@ -209,50 +296,4 @@ button:hover {
     .upgrade-item:active {
         background-color: #2c3e50;
     }
-}
-
-/* 防止iOS设备上的橡皮筋效果 */
-html, body {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    touch-action: none;
-}
-
-#game-header div {
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
-}
-
-#game-header span {
-    font-weight: bold;
-    margin-left: 5px;
-    color: #3498db;
-}
-
-#time, #score, #level {
-    position: relative;
-}
-
-#time::before, #score::before, #level::before {
-    content: '';
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    margin-right: 5px;
-}
-
-#time::before {
-    background-color: #e74c3c;
-}
-
-#score::before {
-    background-color: #2ecc71;
-}
-
-#level::before {
-    background-color: #f39c12;
 } 

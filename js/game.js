@@ -10,13 +10,38 @@ export class Game {
         this.canvas = document.getElementById('game-canvas');
         this.ctx = this.canvas.getContext('2d');
         
-        // 设置画布尺寸
+        // 检测是否为移动设备
+        this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        // 设置画布初始尺寸 - 固定为1920*1080的游戏世界
+        this.gameWorldWidth = CONFIG.CANVAS_WIDTH;
+        this.gameWorldHeight = CONFIG.CANVAS_HEIGHT;
+        this.canvas.width = this.gameWorldWidth;
+        this.canvas.height = this.gameWorldHeight;
+        
+        // 设置画布显示尺寸
         this.setCanvasSize();
         
         // 添加窗口大小改变事件监听
         window.addEventListener('resize', () => {
             this.setCanvasSize();
         });
+        
+        // 添加屏幕方向变化监听
+        if (this.isMobile && window.screen && window.screen.orientation) {
+            window.screen.orientation.addEventListener('change', () => {
+                this.setCanvasSize();
+            });
+            
+            // 尝试锁定屏幕方向为横屏
+            try {
+                window.screen.orientation.lock('landscape').catch(e => {
+                    console.log('无法锁定屏幕方向，请手动旋转设备');
+                });
+            } catch (e) {
+                console.log('设备不支持屏幕方向锁定');
+            }
+        }
         
         // 游戏状态
         this.gameOver = false;
@@ -89,25 +114,80 @@ export class Game {
         const windowWidth = window.innerWidth;
         const windowHeight = window.innerHeight;
         
-        // 计算游戏区域的尺寸
-        let gameWidth = CONFIG.CANVAS_WIDTH;
-        let gameHeight = CONFIG.CANVAS_HEIGHT;
+        // 获取游戏容器元素
+        const gameContainer = document.getElementById('game-container');
         
-        // 计算缩放比例
-        const scaleX = windowWidth / gameWidth;
-        const scaleY = windowHeight / gameHeight;
-        const scale = Math.min(scaleX, scaleY);
+        if (this.isMobile) {
+            // 如果是移动设备，调整为全屏横屏模式
+            // 锁定屏幕方向为横屏
+            if (window.screen && window.screen.orientation) {
+                try {
+                    window.screen.orientation.lock('landscape').catch(() => {
+                        console.log('无法锁定屏幕方向，请手动旋转设备');
+                    });
+                } catch (e) {
+                    console.log('设备不支持屏幕方向锁定');
+                }
+            }
+            
+            // 调整游戏容器样式以适应全屏
+            gameContainer.style.position = 'fixed';
+            gameContainer.style.top = '0';
+            gameContainer.style.left = '0';
+            gameContainer.style.width = '100vw';
+            gameContainer.style.height = '100vh';
+            gameContainer.style.overflow = 'hidden';
+            
+            // 固定宽高比为16:9 (1920:1080)
+            const targetAspectRatio = 16/9;
+            
+            // 确定是否应该适应宽度或高度
+            if (windowWidth / windowHeight > targetAspectRatio) {
+                // 屏幕更宽，以高度为基准
+                this.canvas.style.width = `${windowHeight * targetAspectRatio}px`;
+                this.canvas.style.height = `${windowHeight}px`;
+            } else {
+                // 屏幕更高，以宽度为基准
+                this.canvas.style.width = `${windowWidth}px`;
+                this.canvas.style.height = `${windowWidth / targetAspectRatio}px`;
+            }
+            
+            // 居中画布
+            this.canvas.style.position = 'absolute';
+            this.canvas.style.left = '50%';
+            this.canvas.style.top = '50%';
+            this.canvas.style.transform = 'translate(-50%, -50%)';
+        } else {
+            // 桌面设备使用原有逻辑
+            // 计算游戏区域的尺寸
+            let gameWidth = CONFIG.CANVAS_WIDTH;
+            let gameHeight = CONFIG.CANVAS_HEIGHT;
+            
+            // 计算缩放比例
+            const scaleX = windowWidth / gameWidth;
+            const scaleY = windowHeight / gameHeight;
+            const scale = Math.min(scaleX, scaleY);
+            
+            // 设置画布尺寸
+            this.canvas.style.width = `${gameWidth * scale}px`;
+            this.canvas.style.height = `${gameHeight * scale}px`;
+        }
         
-        // 设置画布尺寸
-        this.canvas.style.width = `${gameWidth * scale}px`;
-        this.canvas.style.height = `${gameHeight * scale}px`;
-        
-        // 保持画布的实际尺寸不变
+        // 保持画布的实际尺寸固定为1920*1080
         this.canvas.width = CONFIG.CANVAS_WIDTH;
         this.canvas.height = CONFIG.CANVAS_HEIGHT;
         
         // 更新坐标转换方法中的缩放比例
-        this.canvasScale = scale;
+        this.updateCanvasScale();
+    }
+    
+    // 更新画布缩放比例
+    updateCanvasScale() {
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvasScale = {
+            x: this.gameWorldWidth / rect.width,
+            y: this.gameWorldHeight / rect.height
+        };
     }
     
     initMoneyRain() {
@@ -135,11 +215,6 @@ export class Game {
     }
     
     addEventListeners() {
-        // 添加窗口大小调整事件
-        window.addEventListener('resize', () => {
-            this.setCanvasSize();
-        });
-        
         // 添加开始按钮事件
         this.startButton.addEventListener('click', () => {
             this.startGame();
@@ -607,12 +682,12 @@ export class Game {
             item.render(this.ctx);
         }
         
-        // 注释掉在画布上绘制的游戏状态信息，因为我们已经在顶部状态栏显示了
-        // this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        // this.ctx.font = 'bold 16px Arial';
-        // this.ctx.textAlign = 'right';
-        // this.ctx.fillText(`难度: ${this.level}`, CONFIG.CANVAS_WIDTH - 20, 30);
-        // this.ctx.fillText(`时间: ${Math.floor(this.time / 1000)}s`, CONFIG.CANVAS_WIDTH - 20, 55);
+        // 绘制游戏状态信息
+        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        this.ctx.font = 'bold 16px Arial';
+        this.ctx.textAlign = 'right';
+        this.ctx.fillText(`难度: ${this.level}`, CONFIG.CANVAS_WIDTH - 20, 30);
+        this.ctx.fillText(`时间: ${Math.floor(this.time / 1000)}s`, CONFIG.CANVAS_WIDTH - 20, 55);
     }
     
     renderGoldenBackground() {
@@ -763,10 +838,10 @@ export class Game {
         let x = clientX - rect.left;
         let y = clientY - rect.top;
         
-        // 使用新的缩放比例
+        // 使用缩放比例转换为1920*1080坐标系
         return {
-            x: x / this.canvasScale,
-            y: y / this.canvasScale
+            x: Math.min(Math.max(0, x * this.canvasScale.x), this.gameWorldWidth),
+            y: Math.min(Math.max(0, y * this.canvasScale.y), this.gameWorldHeight)
         };
     }
 
@@ -1012,6 +1087,11 @@ export class Game {
         this.touchY = coords.y;
         this.lastTouchTime = performance.now();
         this.player.setTarget(coords.x, coords.y);
+        
+        // 在移动设备上，触摸也设置鼠标位置，以便于瞄准
+        this.mouseX = coords.x;
+        this.mouseY = coords.y;
+        this.lastMouseActivity = performance.now();
     }
     
     // 处理触摸移动
@@ -1034,5 +1114,10 @@ export class Game {
         this.touchY = coords.y;
         this.lastTouchTime = performance.now();
         this.player.setTarget(coords.x, coords.y);
+        
+        // 同步更新鼠标位置
+        this.mouseX = coords.x;
+        this.mouseY = coords.y;
+        this.lastMouseActivity = performance.now();
     }
 } 

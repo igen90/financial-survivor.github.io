@@ -5,7 +5,7 @@ export class Opportunity {
     constructor(x, y, targetX, targetY, power, range) {
         this.x = x;
         this.y = y;
-        this.size = 3;
+        this.size = 6;
         this.power = power;
         this.range = range;
         this.color = '#2ecc71';
@@ -61,7 +61,7 @@ export class Opportunity {
             this.particles.push({
                 x: this.x,
                 y: this.y,
-                size: 1 + Math.random(),
+                size: 2 + Math.random() * 2,
                 alpha: 0.7,
                 life: 20
             });
@@ -114,7 +114,7 @@ export class Opportunity {
         ctx.rotate(this.rotation);
         
         // 绘制光晕效果
-        const pulseSize = this.size * (1.5 + this.pulseAmount);
+        const pulseSize = this.size * (1.8 + this.pulseAmount);
         const gradient = ctx.createRadialGradient(
             0, 0, this.size * 0.5,
             0, 0, pulseSize

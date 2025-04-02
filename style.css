@@ -36,11 +36,11 @@ body {
     max-height: 100vh;
 }
 
-/* 16:9固定比例容器 */
-.aspect-ratio-16-9 {
-    aspect-ratio: 16/9;
+/* 21:9固定比例容器 */
+.aspect-ratio-21-9 {
+    aspect-ratio: 21/9;
     width: 100%;
-    max-width: 1920px;
+    max-width: 2520px;
     max-height: 1080px;
     margin: 0 auto;
 }
@@ -192,7 +192,7 @@ button:hover {
         align-items: center;
     }
 
-    .aspect-ratio-16-9 {
+    .aspect-ratio-21-9 {
         width: auto;
         height: auto;
     }
@@ -249,7 +249,7 @@ button:hover {
     }
 }
 
-/* 强制横屏CSS - 设置16:9宽高比 */
+/* 强制横屏CSS - 设置21:9宽高比 */
 @media screen and (orientation: portrait) and (max-width: 768px) {
     html {
         transform: rotate(-90deg);
@@ -276,10 +276,10 @@ button:hover {
     }
 }
 
-/* 确保宽高比16:9 */
+/* 确保宽高比21:9 */
 @media screen and (orientation: landscape) {
     #game-canvas {
-        aspect-ratio: 16/9;
+        aspect-ratio: 21/9;
         max-width: 100vw;
         max-height: 100vh;
         width: auto;

@@ -4,10 +4,10 @@ export class Player {
     constructor() {
         this.x = CONFIG.CANVAS_WIDTH / 2;
         this.y = CONFIG.CANVAS_HEIGHT / 2;
-        this.size = CONFIG.PLAYER.SIZE;
+        this.size = CONFIG.PLAYER.SIZE * 2;
         this.speed = CONFIG.PLAYER.SPEED;
         this.investmentPower = CONFIG.PLAYER.INVESTMENT_POWER;
-        this.investmentRadius = CONFIG.PLAYER.INVESTMENT_RADIUS;
+        this.investmentRadius = CONFIG.PLAYER.INVESTMENT_RADIUS * 1.5;
         this.investmentRate = CONFIG.PLAYER.INVESTMENT_RATE;
         this.lastInvestmentTime = 0;
         this.targetX = null;
@@ -376,61 +376,52 @@ export class Player {
     
     // 绘制交替变化的货币符号
     renderCurrencyIcon(ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        
+        // 绘制文本 - 增大符号尺寸
+        ctx.font = 'bold 32px Arial'; // 原来是16px
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 20px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(this.icons[this.currentIcon], this.x, this.y);
+        ctx.fillText(this.icons[this.currentIcon], 0, 0);
         
-        // 添加小型金融图标点缀
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.font = 'bold 12px Arial';
-        
-        // 在玩家周围环绕绘制小型金融图标
-        for (let i = 0; i < 4; i++) {
-            const angle = (i / 4) * Math.PI * 2 + performance.now() * 0.001;
-            const x = this.x + Math.cos(angle) * (this.size * 0.6);
-            const y = this.y + Math.sin(angle) * (this.size * 0.6);
-            const miniIcon = i % 2 === 0 ? '↗' : '↘';
-            
-            ctx.fillText(miniIcon, x, y);
-        }
+        ctx.restore();
     }
     
     // 绘制火箭炮冷却指示器
     renderRocketCooldown(ctx) {
-        if (this.rocketReady) return;
-        
-        const progress = this.getRocketCooldownProgress();
-        const radius = this.size * 1.8;
-        const startAngle = -Math.PI / 2;
-        const endAngle = startAngle + (Math.PI * 2 * progress);
-        
-        // 绘制背景圆环
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(231, 76, 60, 0.2)';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // 绘制进度圆环
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, radius, startAngle, endAngle);
-        ctx.strokeStyle = 'rgba(231, 76, 60, 0.7)';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // 绘制火箭图标
-        if (progress > 0.5) {
-            ctx.fillStyle = 'rgba(231, 76, 60, 0.8)';
-        } else {
-            ctx.fillStyle = 'rgba(149, 165, 166, 0.8)';
+        if (!this.rocketReady) {
+            // 绘制冷却指示环
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            
+            const progress = this.getRocketCooldownProgress();
+            const cooldownRadius = this.size * 1.8; // 增大冷却指示环
+            
+            // 底层灰色完整圆
+            ctx.beginPath();
+            ctx.arc(0, 0, cooldownRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(100, 100, 100, 0.3)';
+            ctx.lineWidth = 6; // 加粗线条
+            ctx.stroke();
+            
+            // 进度层
+            ctx.beginPath();
+            ctx.arc(0, 0, cooldownRadius, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * progress));
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 6; // 加粗线条
+            ctx.stroke();
+            
+            // 显示冷却百分比文本
+            ctx.font = 'bold 24px Arial'; // 增大字体
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(`${Math.floor(progress * 100)}%`, 0, cooldownRadius + 20);
+            
+            ctx.restore();
         }
-        
-        ctx.font = '10px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('🚀', this.x, this.y - radius);
     }
     
     // 设置鼠标点击目标
@@ -443,10 +434,10 @@ export class Player {
     reset() {
         this.x = CONFIG.CANVAS_WIDTH / 2;
         this.y = CONFIG.CANVAS_HEIGHT / 2;
-        this.size = CONFIG.PLAYER.SIZE;
+        this.size = CONFIG.PLAYER.SIZE * 2;
         this.speed = CONFIG.PLAYER.SPEED;
         this.investmentPower = CONFIG.PLAYER.INVESTMENT_POWER;
-        this.investmentRadius = CONFIG.PLAYER.INVESTMENT_RADIUS;
+        this.investmentRadius = CONFIG.PLAYER.INVESTMENT_RADIUS * 1.5;
         this.investmentRate = CONFIG.PLAYER.INVESTMENT_RATE;
         this.lastInvestmentTime = 0;
         this.targetX = null;

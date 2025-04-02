@@ -8,10 +8,10 @@ export class Item {
         this.isReady = true;
         this.cooldownRemaining = 0;
         
-        // 道具栏位置
-        this.slotX = CONFIG.CANVAS_WIDTH - 100;
-        this.slotY = 100;
-        this.size = 80;
+        // 道具栏位置 - 从右上方改为右侧中部
+        this.slotX = CONFIG.CANVAS_WIDTH - 120;
+        this.slotY = CONFIG.CANVAS_HEIGHT / 2; // 将位置调整到画布的中间高度
+        this.size = 160; // 原尺寸80的两倍
         
         // 视觉效果
         this.pulseAmount = 0;
@@ -70,9 +70,9 @@ export class Item {
         ctx.fillStyle = this.isReady ? this.config.COLOR : 'rgba(128, 128, 128, 0.5)';
         ctx.fill();
         
-        // 绘制道具图标
+        // 绘制道具图标 - 增大字体尺寸
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 48px Arial';
+        ctx.font = 'bold 96px Arial'; // 原48px的两倍
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('💣', 0, 0);
@@ -82,14 +82,14 @@ export class Item {
             ctx.beginPath();
             ctx.arc(0, 0, this.size / 2, -Math.PI / 2, -Math.PI / 2 + (Math.PI * 2 * this.getCooldownProgress()));
             ctx.strokeStyle = 'white';
-            ctx.lineWidth = 6;
+            ctx.lineWidth = 8; // 加粗线条
             ctx.stroke();
         }
         
         // 绘制道具名称
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 16px Arial';
-        ctx.fillText(this.config.NAME, 0, this.size / 2 + 20);
+        ctx.font = 'bold 24px Arial'; // 原16px的1.5倍
+        ctx.fillText(this.config.NAME, 0, this.size / 2 + 30);
         
         ctx.restore();
     }

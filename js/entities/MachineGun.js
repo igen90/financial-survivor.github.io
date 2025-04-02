@@ -5,7 +5,7 @@ export class MachineGun {
     constructor(x, y, targetX, targetY, power) {
         this.x = x;
         this.y = y;
-        this.size = 2.5;
+        this.size = 5; // 尺寸增大一倍
         this.power = power * 0.6; // 单发伤害较低
         this.range = CONFIG.CANVAS_WIDTH; // 射程更远
         this.color = '#f1c40f';
@@ -68,7 +68,7 @@ export class MachineGun {
             this.particles.push({
                 x: this.x,
                 y: this.y,
-                size: 0.8 + Math.random() * 0.6,
+                size: 1.6 + Math.random() * 1.2, // 增大粒子尺寸
                 alpha: 0.8,
                 life: 10
             });
@@ -136,7 +136,7 @@ export class MachineGun {
         // 绘制子弹本体 - 细长形状
         ctx.fillStyle = '#f1c40f';
         ctx.beginPath();
-        ctx.moveTo(this.size * 3, 0);
+        ctx.moveTo(this.size * 4, 0); // 加长子弹形状
         ctx.lineTo(0, this.size);
         ctx.lineTo(-this.size, 0);
         ctx.lineTo(0, -this.size);
@@ -146,7 +146,7 @@ export class MachineGun {
         // 绘制中心点
         ctx.fillStyle = 'white';
         ctx.beginPath();
-        ctx.arc(0, 0, this.size * 0.3, 0, Math.PI * 2);
+        ctx.arc(0, 0, this.size * 0.4, 0, Math.PI * 2); // 增大中心点
         ctx.fill();
     }
 } 

@@ -13,7 +13,7 @@ export class Game {
         // 检测是否为移动设备
         this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        // 设置画布初始尺寸 - 固定为1920*1080的游戏世界
+        // 设置画布初始尺寸 - 固定为2520*1080的21:9游戏世界
         this.gameWorldWidth = CONFIG.CANVAS_WIDTH;
         this.gameWorldHeight = CONFIG.CANVAS_HEIGHT;
         this.canvas.width = this.gameWorldWidth;
@@ -138,8 +138,8 @@ export class Game {
             gameContainer.style.height = '100vh';
             gameContainer.style.overflow = 'hidden';
             
-            // 固定宽高比为16:9 (1920:1080)
-            const targetAspectRatio = 16/9;
+            // 固定宽高比为21:9 (2520:1080)
+            const targetAspectRatio = 21/9;
             
             // 确定是否应该适应宽度或高度
             if (windowWidth / windowHeight > targetAspectRatio) {
@@ -173,7 +173,7 @@ export class Game {
             this.canvas.style.height = `${gameHeight * scale}px`;
         }
         
-        // 保持画布的实际尺寸固定为1920*1080
+        // 保持画布的实际尺寸固定为2520*1080 (21:9)
         this.canvas.width = CONFIG.CANVAS_WIDTH;
         this.canvas.height = CONFIG.CANVAS_HEIGHT;
         

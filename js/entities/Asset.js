@@ -5,7 +5,7 @@ export class Asset {
     constructor(level) {
         this.x = Math.random() * (CONFIG.CANVAS_WIDTH - 40) + 20;
         this.y = Math.random() * (CONFIG.CANVAS_HEIGHT - 40) + 20;
-        this.size = 10;
+        this.size = 20;
         this.value = Math.floor(50 + Math.random() * 50 * level);
         this.typeIndex = Math.floor(Math.random() * CONFIG.ASSET.TYPES.length);
         this.type = CONFIG.ASSET.TYPES[this.typeIndex];
@@ -13,10 +13,10 @@ export class Asset {
         // 浮动动画参数
         this.floatOffset = 0;
         this.floatSpeed = 0.05 + Math.random() * 0.03;
-        this.floatAmount = 2 + Math.random() * 2;
+        this.floatAmount = 4 + Math.random() * 2;
         
         // 发光效果参数
-        this.glowSize = this.size * 1.5;
+        this.glowSize = this.size * 2;
         this.glowAlpha = 0.5;
         this.glowPulse = 0;
         
@@ -223,7 +223,7 @@ export class Asset {
         
         // 绘制金币符号
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 14px Arial';
+        ctx.font = 'bold 24px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('金', 0, 0);

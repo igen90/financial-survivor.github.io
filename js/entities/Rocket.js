@@ -5,11 +5,11 @@ export class Rocket {
     constructor(x, y, targetX, targetY, power) {
         this.x = x;
         this.y = y;
-        this.size = 6;
+        this.size = 12; // 尺寸增大一倍
         this.power = power * 2.5; // 伤害更高
         this.range = CONFIG.CANVAS_WIDTH * 0.8; // 射程适中
         this.color = '#e74c3c';
-        this.explosionRadius = 80; // 爆炸范围
+        this.explosionRadius = 160; // 爆炸范围增大一倍
         this.isExploding = false;
         this.explosionTime = 0;
         this.explosionDuration = 500; // 爆炸持续时间（毫秒）
@@ -189,26 +189,26 @@ export class Rocket {
         if (this.trailTimer >= 2) {
             this.trailTimer = 0;
             
-            // 主尾迹粒子
+            // 主尾迹粒子 - 增大粒子
             this.particles.push({
                 x: this.x - this.vx * 0.5, // 稍微偏移以产生更好的尾迹效果
                 y: this.y - this.vy * 0.5,
-                size: 3 + Math.random() * 2,
+                size: 6 + Math.random() * 4, // 增大尾迹粒子
                 alpha: 0.7,
                 life: 20,
                 color: Math.random() > 0.5 ? '231, 76, 60' : '243, 156, 18' // 红色或橙色
             });
             
-            // 烟雾粒子
+            // 烟雾粒子 - 增大烟雾
             if (Math.random() > 0.5) {
                 const smokeAngle = this.rotation + Math.PI + (Math.random() - 0.5) * 0.5;
-                const smokeDistance = 5 + Math.random() * 5;
+                const smokeDistance = 10 + Math.random() * 5; // 增大烟雾距离
                 this.particles.push({
                     x: this.x - Math.cos(this.rotation) * 5,
                     y: this.y - Math.sin(this.rotation) * 5,
                     vx: Math.cos(smokeAngle) * 0.5,
                     vy: Math.sin(smokeAngle) * 0.5,
-                    size: 2 + Math.random() * 3,
+                    size: 4 + Math.random() * 6, // 增大烟雾粒子
                     alpha: 0.3 + Math.random() * 0.3,
                     life: 30 + Math.random() * 20,
                     color: '100, 100, 100' // 灰色烟雾

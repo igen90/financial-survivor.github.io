@@ -1,7 +1,7 @@
 // 游戏常量和配置
 export const CONFIG = {
-    // 画布尺寸
-    CANVAS_WIDTH: 1920,
+    // 画布尺寸 - 21:9比例 (2520:1080)
+    CANVAS_WIDTH: 2520,
     CANVAS_HEIGHT: 1080,
     
     // 移动设备配置

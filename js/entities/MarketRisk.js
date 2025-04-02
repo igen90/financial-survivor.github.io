@@ -10,8 +10,8 @@ export class MarketRisk {
         this.behavior = type.behavior;
         this.level = level;  // 添加level属性
         
-        // 根据级别调整属性
-        this.size = type.baseSize + Math.random() * 5;
+        // 根据级别调整属性 - 增大尺寸
+        this.size = (type.baseSize + Math.random() * 5) * 2; // 尺寸增大一倍
         this.speed = type.baseSpeed * (1 + Math.random() * 0.5);
         this.maxHealth = type.baseHealth + Math.floor(level / 2);  // 添加maxHealth属性
         this.health = this.maxHealth;  // 初始化当前血量
@@ -266,11 +266,11 @@ export class MarketRisk {
         // 根据敌人类型绘制不同的金融图标
         ctx.save();
         
-        // 绘制血量条背景
-        const healthBarWidth = this.size * 2;
-        const healthBarHeight = 4;
+        // 绘制血量条背景 - 增大
+        const healthBarWidth = this.size * 2.5;
+        const healthBarHeight = 8; // 加粗血条
         const healthBarX = this.x - healthBarWidth / 2;
-        const healthBarY = this.y + this.size + 6;
+        const healthBarY = this.y + this.size + 10;
         
         // 血量条背景
         ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -284,7 +284,7 @@ export class MarketRisk {
         
         // 血量条边框
         ctx.strokeStyle = 'white';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 2; // 加粗边框
         ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
         
         switch (this.id) {
@@ -313,11 +313,11 @@ export class MarketRisk {
             this.renderParticles(ctx);
         }
         
-        // 绘制市场风险名称
+        // 绘制市场风险名称 - 增大字体
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 18px Arial';
+        ctx.font = 'bold 28px Arial'; // 增大文字
         ctx.textAlign = 'center';
-        ctx.fillText(this.name, this.x, this.y - this.size - 8);
+        ctx.fillText(this.name, this.x, this.y - this.size - 10);
         
         ctx.restore();
     }
@@ -362,9 +362,9 @@ export class MarketRisk {
         ctx.closePath();
         ctx.fill();
         
-        // 绘制双向箭头符号
+        // 绘制双向箭头符号 - 增大箭头
         ctx.fillStyle = 'white';
-        ctx.font = `bold ${this.size * 1.2}px Arial`;
+        ctx.font = `bold ${this.size * 1.5}px Arial`; // 增大箭头字体
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('↕', this.x, this.y);

@@ -135,6 +135,11 @@ export class Game {
     }
     
     addEventListeners() {
+        // 添加窗口大小调整事件
+        window.addEventListener('resize', () => {
+            this.setCanvasSize();
+        });
+        
         // 添加开始按钮事件
         this.startButton.addEventListener('click', () => {
             this.startGame();
@@ -602,12 +607,12 @@ export class Game {
             item.render(this.ctx);
         }
         
-        // 绘制游戏状态信息
-        this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        this.ctx.font = 'bold 16px Arial';
-        this.ctx.textAlign = 'right';
-        this.ctx.fillText(`难度: ${this.level}`, CONFIG.CANVAS_WIDTH - 20, 30);
-        this.ctx.fillText(`时间: ${Math.floor(this.time / 1000)}s`, CONFIG.CANVAS_WIDTH - 20, 55);
+        // 注释掉在画布上绘制的游戏状态信息，因为我们已经在顶部状态栏显示了
+        // this.ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        // this.ctx.font = 'bold 16px Arial';
+        // this.ctx.textAlign = 'right';
+        // this.ctx.fillText(`难度: ${this.level}`, CONFIG.CANVAS_WIDTH - 20, 30);
+        // this.ctx.fillText(`时间: ${Math.floor(this.time / 1000)}s`, CONFIG.CANVAS_WIDTH - 20, 55);
     }
     
     renderGoldenBackground() {

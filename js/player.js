@@ -13,6 +13,10 @@ export class Player {
         this.targetX = null;
         this.targetY = null;
         
+        // 添加血量相关属性
+        this.maxHealth = 100;
+        this.health = this.maxHealth;
+        
         // 视觉效果参数
         this.rotation = 0;
         this.pulseAmount = 0;
@@ -211,6 +215,27 @@ export class Player {
     render(ctx) {
         ctx.save();
         
+        // 绘制血量条背景
+        const healthBarWidth = this.size * 2;
+        const healthBarHeight = 4;
+        const healthBarX = this.x - healthBarWidth / 2;
+        const healthBarY = this.y + this.size + 6;  // 改为图标下方
+        
+        // 血量条背景
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        
+        // 血量条
+        const healthPercentage = this.health / this.maxHealth;
+        ctx.fillStyle = healthPercentage > 0.6 ? '#2ecc71' : 
+                       healthPercentage > 0.3 ? '#f1c40f' : '#e74c3c';
+        ctx.fillRect(healthBarX, healthBarY, healthBarWidth * healthPercentage, healthBarHeight);
+        
+        // 血量条边框
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        
         // 绘制粒子效果
         this.renderParticles(ctx);
         
@@ -352,14 +377,14 @@ export class Player {
     // 绘制交替变化的货币符号
     renderCurrencyIcon(ctx) {
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 16px Arial';
+        ctx.font = 'bold 20px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(this.icons[this.currentIcon], this.x, this.y);
         
         // 添加小型金融图标点缀
         ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.font = '8px Arial';
+        ctx.font = 'bold 12px Arial';
         
         // 在玩家周围环绕绘制小型金融图标
         for (let i = 0; i < 4; i++) {
@@ -434,6 +459,7 @@ export class Player {
         this.rocketReady = true;
         this.rocketCooldownRemaining = 0;
         this.machineGunActive = true;
+        this.health = this.maxHealth;
     }
     
     // 判断玩家是否在移动

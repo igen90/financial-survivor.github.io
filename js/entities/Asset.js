@@ -223,7 +223,7 @@ export class Asset {
         
         // 绘制金币符号
         ctx.fillStyle = 'white';
-        ctx.font = '10px Arial';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('金', 0, 0);
@@ -280,7 +280,7 @@ export class Asset {
         
         // 绘制现金符号
         ctx.fillStyle = 'white';
-        ctx.font = '10px Arial';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('¥', 0, 0);
@@ -308,7 +308,7 @@ export class Asset {
         
         // 绘制资产符号
         ctx.fillStyle = 'white';
-        ctx.font = '10px Arial';
+        ctx.font = 'bold 14px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('$', 0, 0);

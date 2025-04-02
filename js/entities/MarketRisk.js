@@ -8,11 +8,13 @@ export class MarketRisk {
         this.name = type.name;
         this.color = type.color;
         this.behavior = type.behavior;
+        this.level = level;  // 添加level属性
         
         // 根据级别调整属性
         this.size = type.baseSize + Math.random() * 5;
         this.speed = type.baseSpeed * (1 + Math.random() * 0.5);
-        this.health = type.baseHealth + Math.floor(level / 2);
+        this.maxHealth = type.baseHealth + Math.floor(level / 2);  // 添加maxHealth属性
+        this.health = this.maxHealth;  // 初始化当前血量
         this.value = Math.floor(type.baseValue + Math.random() * 10 * level);
         
         // 初始化行为特定的属性
@@ -264,6 +266,27 @@ export class MarketRisk {
         // 根据敌人类型绘制不同的金融图标
         ctx.save();
         
+        // 绘制血量条背景
+        const healthBarWidth = this.size * 2;
+        const healthBarHeight = 4;
+        const healthBarX = this.x - healthBarWidth / 2;
+        const healthBarY = this.y + this.size + 6;
+        
+        // 血量条背景
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        
+        // 血量条
+        const healthPercentage = this.health / this.maxHealth;  // 使用maxHealth计算百分比
+        ctx.fillStyle = healthPercentage > 0.6 ? '#2ecc71' : 
+                       healthPercentage > 0.3 ? '#f1c40f' : '#e74c3c';
+        ctx.fillRect(healthBarX, healthBarY, healthBarWidth * healthPercentage, healthBarHeight);
+        
+        // 血量条边框
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        
         switch (this.id) {
             case 'volatility': // 市场波动 - 三角形
                 this.renderVolatility(ctx);
@@ -292,9 +315,9 @@ export class MarketRisk {
         
         // 绘制市场风险名称
         ctx.fillStyle = 'white';
-        ctx.font = '10px Arial';
+        ctx.font = 'bold 18px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText(this.name, this.x, this.y - this.size - 5);
+        ctx.fillText(this.name, this.x, this.y - this.size - 8);
         
         ctx.restore();
     }
@@ -341,7 +364,7 @@ export class MarketRisk {
         
         // 绘制双向箭头符号
         ctx.fillStyle = 'white';
-        ctx.font = `bold ${this.size}px Arial`;
+        ctx.font = `bold ${this.size * 1.2}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('↕', this.x, this.y);
@@ -356,7 +379,7 @@ export class MarketRisk {
         
         // 绘制上升箭头符号
         ctx.fillStyle = 'white';
-        ctx.font = `bold ${this.size}px Arial`;
+        ctx.font = `bold ${this.size * 1.2}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('↗', this.x, this.y);
@@ -377,7 +400,7 @@ export class MarketRisk {
         
         // 绘制下降箭头符号
         ctx.fillStyle = 'white';
-        ctx.font = `bold ${this.size}px Arial`;
+        ctx.font = `bold ${this.size * 1.2}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('↓', this.x, this.y);
@@ -418,7 +441,7 @@ export class MarketRisk {
         
         // 绘制除号符号
         ctx.fillStyle = 'white';
-        ctx.font = `bold ${this.size * 0.8}px Arial`;
+        ctx.font = `bold ${this.size * 1.2}px Arial`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('÷', this.x, this.y);

@@ -1,7 +1,6 @@
-import { MarketRisk } from './MarketRisk.js';
-import { Opportunity } from './Opportunity.js';
-import { Asset } from './Asset.js';
-import { MachineGun } from './MachineGun.js';
-import { Rocket } from './Rocket.js';
-
-export { MarketRisk, Opportunity, Asset, MachineGun, Rocket }; 
+export { MarketRisk } from './MarketRisk.js';
+export { Opportunity } from './Opportunity.js';
+export { Asset } from './Asset.js';
+export { MachineGun } from './MachineGun.js';
+export { Rocket } from './Rocket.js';
+export { Item } from './Item.js'; 
